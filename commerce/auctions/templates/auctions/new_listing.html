@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2 class="text-center">New Listing</h2>
+<div class="container my-5 p-5 shadow-lg rounded border rounded-5 d-flex justify-content-center">
+    <form action="{% url 'new_listing' %}" method="post">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <button type="submit" class="btn btn-outline-primary btn-sm">Submit Listing</button>
+    </form>
+
+</div>
+
+
+{% endblock %}

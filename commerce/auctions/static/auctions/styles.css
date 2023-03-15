@@ -1,0 +1,28 @@
+
+.card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.card-footer{
+    display:flex;
+    flex-direction: column;
+}
+div .image{
+    overflow: hidden;
+    height: 70%;
+
+}
+.image {
+
+    object-fit: contain;
+
+}
+.time{
+    font-size: x-small;
+    font-style: italic;
+    color: rgb(100, 100, 100);
+}
+.navbar{
+    background-color: rgb(209, 209, 209);
+}

@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<div class="container shadow-lg rounded border rounded-5 p-4  m-auto">
+    <h2 class="fs-1 fw-bolder text-center ">Bid Correction</h2>
+    {% include 'auctions/flash_messeges.html' %}
+    <div class="row row-cols-1 row-cols-md-2">
+
+        <div class="col text-center">
+            <listing_title class="m-4 d-flex justify-content-evenly align-items-center">
+                <h2 class="fs-3 fw-bolder ">{{ listing.title.capitalize }}</h2>
+
+            </listing_title>
+            <hr class="border border-secondary opacity-25">
+            <bidding class="row">
+                <div class="d-flex justify-content-evenly m-3 align-items-center">
+                    <div class="badge bg-success text-wrap w-25 bg-opacity-75">
+                        {% if current_bids %}
+                        {{ current_bids.count }} bids
+                        {% else %}
+                        0 Bids
+                        {% endif %}
+                    </div>
+                    {% if current_bids.last.bid %}
+                    <div class="badge bg-success text-wrap bg-opacity-75" ">   Current bid: ${{ current_bids.last.bid }}  </div>
+                            
+                            {% else %}
+                            <div class=" badge bg-success text-wrap bg-opacity-75" ">   Starting bid: ${{listing.starting_bid}}  </div>
+                            
+                            {% endif %}
+                        </div>
+                     <form
+                        action=" {% url 'place_bid' listing_id=listing.id %}" method="post"
+                        class="d-flex justify-content-center m-3 align-items-center">
+                        {% csrf_token %}
+
+                        <div class="fieldWrapper mx-3">
+                            {{ bid_form}}
+
+                        </div>
+                        <button type="submit" class="btn btn-outline-success mx-3">Place bid</button>
+                        </form>
+            </bidding>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+            <hr class="border border-secondary opacity-25">
+            <div class="text-bg-light w-100 rounded rounded-5 p-5 ">
+                <h2 class="p-2 text-center">Description</h2>
+                <p>{{ listing.description }}</p>
+            </div>
+        </div>
+        <div class="col text-center"></div>
+    </div>
+</div>
+{% endblock %}

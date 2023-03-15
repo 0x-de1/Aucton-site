@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% include 'auctions/flash_messeges.html' %}
+
+<h2 class="text-center">Active Listings</h2>
+
+<div class="row  row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-1 g-4 m-auto">
+  {% for listing in listings %}
+  {% if listing.listing_status or listing.highest_bidder == user.id %}
+  <div class="col ">
+    <div class="card h-100 shadow">
+      <div class="listing-image">
+        <img src="{% if listing.image_url %}{{listing.image_url}}
+        {% else %}
+        https://via.placeholder.com/300x300?text=Auctions+.com
+        {% endif %}" class="card-img-top" alt="{{listing.title}}">
+      </div>
+      <div class="card-body">
+        <strong>
+          <h5 class="card-title "><a href="{% url 'listing' listing_id=listing.id %}"
+              class="stretched-link">{{listing.title.capitalize}}</a></h5>
+        </strong>
+        <p class="card-text fst-italic">{{listing.short_description}}</p>
+      </div>
+      <div class="card-footer">
+        <div class="bid d-flex justify-content-between">
+
+          {% if listing.listing_status and listing.highest_bid %}
+          <span class="fw-bold text-start">${{listing.highest_bid}}
+          </span>
+          <div class="text-end badge bg-success text-wrap"> {{listing.bids.count}} bids</div>
+          {% elif not listing.listing_status and listing.highest_bidder == user.id %}
+          <div></div>
+          <div class="   badge bg-success text-wrap"> You won this auction!</div>
+          <div></div>
+          {% else %}
+          <span class="fw-bold text-start">${{listing.starting_bid}}</span>
+          <div class=" text-end badge bg-secondary text-wrap"> 0 bids</div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% endfor %}
+</div>
+
+{% endblock %}

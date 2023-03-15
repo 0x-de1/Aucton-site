@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% include 'auctions/flash_messeges.html' %}
+
+<h2 class="text-center">Categories</h2>
+
+<div class="row  row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-1 g-4 m-auto">
+  {% for listing in listings %}
+  <div class="col ">
+    <div class="card h-100 shadow ">
+      <div class="listing-image">
+        <img src="{% if listing.image_url %}{{listing.image_url}}
+        {% else %}
+        https://via.placeholder.com/300x300?text=Auctions+.com
+        {% endif %}" class="card-img-top" alt="{{listing.category}}">
+      </div>
+      <div class="card-body">
+        <strong>
+          <h5 class="card-title text-center"><a href="{% url 'category_products' category_name=listing.category %}"
+              class="stretched-link">{{listing.category.capitalize}}</a></h5>
+
+        </strong>
+      </div>
+
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% if messages %}
+<div class=" d-flex justify-content-center align-items-center ">
+
+    {% for message in messages %}
+    <span class=" messages p-1 fw-light alert 
+    {% if message.tags %} {{ message.tags }} {% endif %} d-flex align-items-center" role="alert">
+
+        {{ message }}
+
+    </span>
+    {% endfor %}
+</div>
+{% endif %}

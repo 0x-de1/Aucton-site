@@ -1,0 +1,88 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{% include 'auctions/flash_messeges.html' %}
+
+<div class="container shadow-lg rounded border rounded-5 p-4  m-auto">
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col d-flex justify-content-center align-items-center image">
+            <img class="image"
+                src="{% if listing.image_url %}{{ listing.image_url }}{% else %}https://via.placeholder.com/300x300?text=Auctions+.com{% endif %}"
+                alt=" {{ listing.title }} ">
+        </div>
+        <div class="col text-center">
+            <listing_title class="m-4 d-flex justify-content-evenly align-items-center">
+                <h1 class="fs-1 fw-bolder ">{{ listing.title.capitalize }}</h1>
+
+                <form action="{% url 'watchlist' %}" method="post" " >
+                        {% csrf_token %}
+                        <input type= "hidden" name="listing_id" value="{{ listing.id }}">
+                    <button type="submit" id="not_watched"
+                        class=" {% if not watching %} visually-hidden{% endif %} btn btn-outline-danger fw-light mx-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
+                        </svg>
+                        Watching
+                    </button>
+                    <button type="submit" id="watched"
+                        class="{% if watching %} visually-hidden{% endif %} btn btn-outline-secondary fw-light mx-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path
+                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
+                            </path>
+                        </svg>
+                        Watch
+                    </button>
+                </form>
+            </listing_title>
+            <hr class="border border-secondary opacity-25">
+            <bidding class="row">
+                <div class="d-flex justify-content-evenly m-3 align-items-center">
+                    <div class="badge bg-success text-wrap w-25 bg-opacity-75">
+                        {% if current_bids %}
+                        {{ current_bids.count }} bids
+                        {% else %}
+                        0 Bids
+                        {% endif %}
+                    </div>
+                    {% if current_bids.exists %}
+                    <div class="badge bg-success text-wrap bg-opacity-75" ">   Current bid: ${{ current_bids.last.bid }}  </div>
+                            
+                            {% else %}
+                            <div class=" badge bg-success text-wrap bg-opacity-75" ">   Starting bid: ${{listing.starting_bid}}  </div>
+                            
+                            {% endif %}
+                        </div>
+                
+                <form action=" {% url 'place_bid' listing_id=listing.id %}" method="post"
+                        class="d-flex justify-content-center m-3 align-items-center">
+                        {% csrf_token %}
+                        <div class="fieldWrapper mx-3">
+                            {{ bid_form}}
+
+                        </div>
+                        <button type="submit" class="btn btn-outline-success mx-3">Place bid</button>
+                        </form>
+            </bidding>
+        </div>
+    </div>
+    <div class="col d-flex flex-column justify-content-center align-items-center m-5">
+        <hr class="border border-secondary opacity-25">
+        <div class="text-bg-light w-100 rounded rounded-5 p-5 ">
+            <h2 class="p-2 text-center">Description</h2>
+            <p>{{ listing.description }}</p>
+        </div>
+    </div>
+    {% if owner and listing.listing_status %}        
+        <form action="{% url 'close_auction' listing_id=listing.id%}" method="post"
+        class="d-flex justify-content-center w-100 ">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger w-25 ">Close listing</button>
+        </form>
+    {% endif %}
+{% include 'auctions/comment_section.html' %}
+
+</div>
+{% endblock %}
